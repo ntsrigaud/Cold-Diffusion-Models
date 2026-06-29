@@ -9,6 +9,7 @@ WORKDIR /workspace
 
 # ── Core ML & scientific dependencies ─────────────────────────────────────────
 COPY requirements.txt .
+COPY pycave_mock ./pycave_mock
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ── Install the snowification / decolor-diffusion package ─────────────────────
