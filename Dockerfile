@@ -1,0 +1,29 @@
+FROM nvcr.io/nvidia/pytorch:26.06-py3
+
+LABEL project="cold-diffusion-models" \
+      description="Cold Diffusion: Inverting Arbitrary Image Transforms Without Noise" \
+      paper="https://arxiv.org/abs/2208.09392"
+
+# Set the working directory inside the container
+WORKDIR /workspace
+
+# ── Core ML & scientific dependencies ─────────────────────────────────────────
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ── Install the snowification / decolor-diffusion package ─────────────────────
+# Both share the same diffusion/ package; install from snowification as canonical
+COPY snowification/setup.py /tmp/snowification_setup.py
+RUN cd /tmp && pip install --no-cache-dir setuptools
+
+# Expose the default Jupyter port
+EXPOSE 8888
+
+# Launch JupyterLab using ServerApp (JupyterLab ≥ 3 / Jupyter Server ≥ 2)
+# --ip=0.0.0.0 allows connections from outside the container
+# --allow-root is required since Docker containers run as root by default
+# Token and password are disabled for ease of local use (not for production)
+CMD ["jupyter", "lab", \
+     "--ip=0.0.0.0", "--port=8888", \
+     "--no-browser", "--allow-root", \
+     "--ServerApp.token=''", "--ServerApp.password=''"]
