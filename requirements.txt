@@ -1,0 +1,33 @@
+# Tensor ops & utilities
+einops
+numpy
+scipy
+
+# Image processing
+Pillow
+opencv-python-headless
+imageio
+scikit-image
+
+# PyTorch geometry & vision utils
+torchgeometry
+kornia
+
+# Metrics
+pytorch-msssim
+pytorch-fid
+scikit-learn
+
+# GMM (GPU-accelerated, used in blur/resolution test scripts)
+pycave
+
+# Experiment tracking (used in deblurring & demixing modules)
+comet_ml
+
+# Visualization & notebooks
+matplotlib
+seaborn
+jupyterlab
+ipywidgets
+ipython
+tqdm
