@@ -1,0 +1,21 @@
+services:
+  cold-diffusion-jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cold_diffusion_jupyter
+    volumes:
+      - .:/workspace              # Full repository mounted at /workspace
+      - ./data:/workspace/data    # Datasets (MNIST, CIFAR-10, CelebA, AFHQ)
+      - ./checkpoints:/workspace/checkpoints  # Saved model checkpoints
+      - ./results:/workspace/results          # Training results & generated images
+    ports:
+      - "8888:8888"               # Maps host:8888 → container:8888 (JupyterLab)
+    shm_size: '16gb'              # Prevents shared-memory crashes with PyTorch DataLoaders
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all          # Expose all available GPUs to the container
+              capabilities: [gpu]
