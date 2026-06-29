@@ -18,8 +18,8 @@ pytorch-msssim
 pytorch-fid
 scikit-learn
 
-# GMM (GPU-accelerated, used in blur/resolution test scripts)
-pycave
+# GMM (mocked using scikit-learn to avoid PyTorch 2.x conflicts)
+./pycave_mock
 
 # Experiment tracking (used in deblurring & demixing modules)
 comet_ml
