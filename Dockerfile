@@ -30,10 +30,7 @@ RUN chown -R jupyteruser:jupyteruser /workspace
 USER jupyteruser
 
 # Launch JupyterLab using ServerApp (JupyterLab ≥ 3 / Jupyter Server ≥ 2)
-# --ip=0.0.0.0 allows connections from outside the container
-# --allow-root is required since Docker containers run as root by default
-# Token and password are disabled for ease of local use (not for production)
+# Security: Authentication is ENABLED and --allow-root is REMOVED
 CMD ["jupyter", "lab", \
      "--ip=0.0.0.0", "--port=8888", \
-     "--no-browser", "--allow-root", \
-     "--ServerApp.token=''", "--ServerApp.password=''"]
+     "--no-browser"]
