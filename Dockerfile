@@ -31,6 +31,4 @@ USER jupyteruser
 
 # Launch JupyterLab using ServerApp (JupyterLab ≥ 3 / Jupyter Server ≥ 2)
 # Security: Authentication is ENABLED and --allow-root is REMOVED
-CMD ["jupyter", "lab", \
-     "--ip=0.0.0.0", "--port=8888", \
-     "--no-browser"]
+CMD ["/bin/sh", "-c", "jupyter lab --ip=0.0.0.0 --port=${JUPYTER_PORT:-8888} --no-browser"]
