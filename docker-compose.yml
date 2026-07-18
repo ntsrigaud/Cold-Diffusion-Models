@@ -13,6 +13,7 @@ services:
       - "127.0.0.1:${JUPYTER_PORT}:${JUPYTER_PORT}"     # SECURITY: Maps localhost:${JUPYTER_PORT} → container:${JUPYTER_PORT}
     environment:
       - JUPYTER_TOKEN=${JUPYTER_TOKEN}
+      - JUPYTER_PORT=${JUPYTER_PORT}
     shm_size: '16gb'              # Prevents shared-memory crashes with PyTorch DataLoaders
     deploy:
       resources:
