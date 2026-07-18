@@ -10,7 +10,9 @@ services:
       - ./checkpoints:/workspace/checkpoints  # Saved model checkpoints
       - ./results:/workspace/results          # Training results & generated images
     ports:
-      - "8888:8888"               # Maps host:8888 → container:8888 (JupyterLab)
+      - "127.0.0.1:8888:8888"     # SECURITY: Maps localhost:8888 → container:8888
+    environment:
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN}
     shm_size: '16gb'              # Prevents shared-memory crashes with PyTorch DataLoaders
     deploy:
       resources:
