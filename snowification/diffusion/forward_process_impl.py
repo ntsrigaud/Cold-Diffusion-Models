@@ -360,6 +360,8 @@ class Snow(ForwardProcessBase):
     
     @torch.no_grad()
     def forward(self, x, i, og=None):
+        if og is None:
+            raise ValueError("The Snow forward process strictly requires the original image (og) to correctly compute degradation. Do not leave it as None.")
         og_r = (og + 1.) / 2.
         og_gray = rgb_to_grayscale(og_r) * 1.5 + 0.5
         og_gray = torch.maximum(og_r, og_gray)
