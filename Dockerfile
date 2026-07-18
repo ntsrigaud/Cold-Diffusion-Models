@@ -4,6 +4,9 @@ LABEL project="cold-diffusion-models" \
       description="Cold Diffusion: Inverting Arbitrary Image Transforms Without Noise" \
       paper="https://arxiv.org/abs/2208.09392"
 
+# ── Create non-root user for security ─────────────────────────────────────────
+RUN useradd -m -s /bin/bash -u 1000 jupyteruser
+
 # Set the working directory inside the container
 WORKDIR /workspace
 
@@ -19,6 +22,12 @@ RUN cd /tmp && pip install --no-cache-dir setuptools
 
 # Expose the default Jupyter port
 EXPOSE 8888
+
+# Ensure the non-root user owns the workspace
+RUN chown -R jupyteruser:jupyteruser /workspace
+
+# Switch to the non-root user
+USER jupyteruser
 
 # Launch JupyterLab using ServerApp (JupyterLab ≥ 3 / Jupyter Server ≥ 2)
 # --ip=0.0.0.0 allows connections from outside the container
