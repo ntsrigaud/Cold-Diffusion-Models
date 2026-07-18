@@ -5,7 +5,7 @@ LABEL project="cold-diffusion-models" \
       paper="https://arxiv.org/abs/2208.09392"
 
 # ── Create non-root user for security ─────────────────────────────────────────
-RUN useradd -m -s /bin/bash -u 1000 jupyteruser
+RUN useradd -m -s /bin/bash jupyteruser
 
 # Set the working directory inside the container
 WORKDIR /workspace
