@@ -1207,7 +1207,7 @@ class Trainer(object):
                 milestone = self.step // self.save_and_sample_every
                 batches = self.batch_size
                 og_img = next(self.dl).cuda()
-                xt, direct_recons, all_images = self.ema_model.module.sample(batch_size=batches, img=og_img) # change for DP
+                xt, direct_recons, all_images = getattr(self.ema_model, 'module', self.ema_model).sample(batch_size=batches, img=og_img) # change for DP
 
                 og_img = (og_img + 1) * 0.5
                 utils.save_image(og_img, str(self.results_folder / f'sample-og-{milestone}.png'), nrow=6)
@@ -1238,7 +1238,7 @@ class Trainer(object):
     def test_from_data(self, extra_path, s_times=None):
         batches = self.batch_size
         og_img = next(self.dl).cuda()
-        X_0s, X_ts = self.ema_model.module.all_sample(batch_size=batches, img=og_img, times=s_times) # change for DP
+        X_0s, X_ts = getattr(self.ema_model, 'module', self.ema_model).all_sample(batch_size=batches, img=og_img, times=s_times) # change for DP
 
         og_img = (og_img + 1) * 0.5
         utils.save_image(og_img, str(self.results_folder / f'og-{extra_path}.png'), nrow=6)
@@ -1277,7 +1277,7 @@ class Trainer(object):
             og_img = next(self.dl).cuda()
             print(og_img.shape)
 
-            Forward, Backward_1, Backward_2, final_all_1, final_all_2 = self.ema_model.module.forward_and_backward_2(batch_size=batches, img=og_img, noise_level=0.000)
+            Forward, Backward_1, Backward_2, final_all_1, final_all_2 = getattr(self.ema_model, 'module', self.ema_model).forward_and_backward_2(batch_size=batches, img=og_img, noise_level=0.000)
             og_img = (og_img + 1) * 0.5
             final_all_1 = (final_all_1 + 1) * 0.5
             final_all_2 = (final_all_2 + 1) * 0.5
@@ -1347,7 +1347,7 @@ class Trainer(object):
             og_img = next(self.dl).cuda()
             print(og_img.shape)
 
-            Forward, Backward, final_all = self.ema_model.module.forward_and_backward(batch_size=batches, img=og_img, noise_level=0.002)
+            Forward, Backward, final_all = getattr(self.ema_model, 'module', self.ema_model).forward_and_backward(batch_size=batches, img=og_img, noise_level=0.002)
             og_img = (og_img + 1) * 0.5
             final_all = (final_all + 1) * 0.5
 
@@ -1440,7 +1440,7 @@ class Trainer(object):
             og_img = og_img.type(torch.cuda.FloatTensor)
 
             print(og_img.shape)
-            xt, direct_recons, all_images = self.ema_model.module.gen_sample(batch_size=bs, img=og_img,
+            xt, direct_recons, all_images = getattr(self.ema_model, 'module', self.ema_model).gen_sample(batch_size=bs, img=og_img,
                                                                              noise_level=noise)
 
             for i in range(all_images.shape[0]):
@@ -1496,7 +1496,7 @@ class Trainer(object):
 
                     print(i, noise, j)
                     og_img = og_x
-                    xt, direct_recons, all_images = self.ema_model.module.gen_sample_2(batch_size=num_samples, img=og_img, noise_level=noise)
+                    xt, direct_recons, all_images = getattr(self.ema_model, 'module', self.ema_model).gen_sample_2(batch_size=num_samples, img=og_img, noise_level=noise)
 
                     og_img = (og_img + 1) * 0.5
                     utils.save_image(og_img, str(self.results_folder / f'sample-og-{noise}-{i}-{j}.png'), nrow=6)
@@ -1523,7 +1523,7 @@ class Trainer(object):
         for i, img in enumerate(dl, 0):
             print(i)
             print(img.shape)
-            img = self.ema_model.module.opt(img.cuda(), t=sample_at)
+            img = getattr(self.ema_model, 'module', self.ema_model).opt(img.cuda(), t=sample_at)
             img = F.interpolate(img, size=siz, mode='bilinear')
             img = flatten(img).cuda()
 
@@ -1548,7 +1548,7 @@ class Trainer(object):
 
         og_img = og_x
         print(og_img.shape)
-        xt, direct_recons, all_images = self.ema_model.module.sample_from_blur(batch_size=num_samples, img=og_img, start=sample_at)
+        xt, direct_recons, all_images = getattr(self.ema_model, 'module', self.ema_model).sample_from_blur(batch_size=num_samples, img=og_img, start=sample_at)
 
         og_img = (og_img + 1) * 0.5
         utils.save_image(og_img, str(self.results_folder / f'sample-og-{sample_at}-{siz}-{clusters}.png'), nrow=6)
@@ -1602,7 +1602,7 @@ class Trainer(object):
             og_x = og_x.type(torch.cuda.FloatTensor)
             og_img = og_x
             print(og_img.shape)
-            X_0s, X_ts = self.ema_model.module.all_sample(batch_size=og_img.shape[0], img=og_img, times=None)
+            X_0s, X_ts = getattr(self.ema_model, 'module', self.ema_model).all_sample(batch_size=og_img.shape[0], img=og_img, times=None)
 
             og_img = og_img.to('cpu')
             blurry_imgs = X_ts[0].to('cpu')
